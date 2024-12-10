@@ -4,22 +4,20 @@ import com.esaternperarl.tasktracker.dto.TaskDto;
 import com.esaternperarl.tasktracker.entity.Task;
 import com.esaternperarl.tasktracker.service.TaskService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("task")
+@RequestMapping("/task")
+@RequiredArgsConstructor
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
-    @Autowired
-    private ObjectMapper mapper;
+    private final TaskService taskService;
+    private final ObjectMapper mapper;
 
     @GetMapping("/all")
     public List<TaskDto> getAllTasks(){
@@ -28,4 +26,13 @@ public class TaskController {
                 .convertValue(task, TaskDto.class))
                 .toList();
     }
+
+    @PostMapping("/add")
+    public TaskDto addTask(@RequestBody @Valid TaskDto taskDto){
+        System.out.println(taskDto);
+        return mapper.convertValue(taskService.add(taskDto) , TaskDto.class);
+    }
+
+
+
 }
