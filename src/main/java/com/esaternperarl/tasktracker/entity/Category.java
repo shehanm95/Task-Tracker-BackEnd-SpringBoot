@@ -1,5 +1,6 @@
 package com.esaternperarl.tasktracker.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,8 +18,9 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(nullable = false, unique = true)
+    //@Column(nullable = false, unique = true)
     private String name;
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private List<Task> taskList;
 }

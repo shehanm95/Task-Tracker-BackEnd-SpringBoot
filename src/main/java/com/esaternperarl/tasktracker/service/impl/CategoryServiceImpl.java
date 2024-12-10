@@ -26,26 +26,22 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category save(CategoryDto categoryDto) {
-        if(categoryDto.name() == null || categoryDto.name().isBlank()){
-            throw new IllegalArgumentException("Category Name Cannot Be Empty");
-        }
         return categoryRepo.save(categoryMapper.toEntity(categoryDto));
     }
 
     @Override
     public Category update(CategoryDto categoryDto) {
 
-        if(categoryDto.id() == null) throw new IllegalArgumentException("Category Id Must Exist to Update a Category");
-        else if(!categoryRepo.existsById(categoryDto.id())) throw new IllegalArgumentException("Category with this Id '"+categoryDto.id()+"' must exist to update a Category, Category 'Not Exist' in the database");
-        else if (categoryDto.name() == null || categoryDto.name().isBlank()) throw new IllegalArgumentException("Category Name Cannot Be Empty");
+        if(categoryDto.getId() == null) throw new IllegalArgumentException("Category Id Must Exist to Update a Category");
+        else if(!categoryRepo.existsById(categoryDto.getId())) throw new IllegalArgumentException("Category with this Id '"+categoryDto.getId()+"' must exist to update a Category, Category 'Not Exist' in the database");
 
         // Retrieve the category and update
-        return categoryRepo.findById(categoryDto.id())
+        return categoryRepo.findById(categoryDto.getId())
                 .map(category -> {
-                    category.setName(categoryDto.name());
+                    category.setName(categoryDto.getName());
                     return categoryRepo.save(category);
                 })
-                .orElseThrow(() -> new IllegalStateException("Unexpected error: Category with ID '" + categoryDto.id() + "' not found"));
+                .orElseThrow(() -> new IllegalStateException("Unexpected error: Category with ID '" + categoryDto.getId() + "' not found"));
 
 
     }

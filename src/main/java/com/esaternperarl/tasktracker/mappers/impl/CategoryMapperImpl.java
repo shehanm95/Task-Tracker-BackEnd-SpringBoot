@@ -4,6 +4,7 @@ import com.esaternperarl.tasktracker.dto.CategoryDto;
 import com.esaternperarl.tasktracker.entity.Category;
 import com.esaternperarl.tasktracker.mappers.CategoryMapper;
 import com.esaternperarl.tasktracker.mappers.TaskMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,23 +12,20 @@ import java.util.Collections;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class CategoryMapperImpl implements CategoryMapper {
 
     private final TaskMapper taskMapper;
+    private final ObjectMapper objectMapper;
 
-    public CategoryMapperImpl(TaskMapper taskMapper) {
-        this.taskMapper = taskMapper;
-    }
 
     @Override
     public Category toEntity(CategoryDto categoryDto) {
-       return new Category(
-               categoryDto.id(),
-               categoryDto.name(),
-               Optional.ofNullable(categoryDto.taskDtoList()).map(
-                      tasks -> tasks.stream().map(taskMapper::toEntity).toList()
-               ).orElse(Collections.emptyList())
-       );
+        Category category = objectMapper.convertValue(categoryDto,Category.class);
+        category.setTaskList(categoryDto.getTaskDtoList().stream().map(
+                taskMapper::toEntity
+        ).toList());
+       return category;
     }
 
     @Override

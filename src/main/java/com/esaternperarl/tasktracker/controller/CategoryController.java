@@ -17,11 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CategoryController {
 
-
-    private final  CategoryRepo categoryRepo;
-
     private final  CategoryService categoryService;
-
     private  final CategoryMapper categoryMapper;
 
     @PostMapping("/add")
@@ -40,13 +36,16 @@ public class CategoryController {
     }
 
     @GetMapping("/get/{id}")
-    public Category getCategory(@PathVariable UUID id){
-        return categoryService.findById(id);
+    public CategoryDto getCategory(@PathVariable UUID id){
+        return categoryMapper.toDto(categoryService.findById(id));
     }
 
     @GetMapping("/all")
-    public List<Category> getAllCategories(){
-        return categoryService.findAll();
+    public List<CategoryDto> getAllCategories(){
+        return categoryService.findAll()
+                .stream()
+                .map(categoryMapper::toDto)
+                .toList();
     }
 
 }

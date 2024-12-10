@@ -1,5 +1,6 @@
 package com.esaternperarl.tasktracker.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,10 +17,11 @@ public class SubTask {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String subTaskName;
     @ManyToOne
     @JoinColumn(name = "task_id")
+    @JsonIgnore
     private Task task;
     private Boolean isFinished;
 }
