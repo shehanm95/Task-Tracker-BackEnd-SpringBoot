@@ -1,12 +1,9 @@
 package com.esaternperarl.tasktracker.controller;
 
 import com.esaternperarl.tasktracker.dto.CategoryDto;
-import com.esaternperarl.tasktracker.entity.Category;
 import com.esaternperarl.tasktracker.mappers.CategoryMapper;
-import com.esaternperarl.tasktracker.repo.CategoryRepo;
 import com.esaternperarl.tasktracker.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +19,7 @@ public class CategoryController {
 
     @PostMapping("/add")
     public CategoryDto addCategory(@RequestBody CategoryDto categoryDto){
-        return categoryMapper.toDto(categoryService.save(categoryDto));
+        return categoryMapper.toDto(categoryService.add(categoryDto));
     }
 
    @PutMapping("/update")

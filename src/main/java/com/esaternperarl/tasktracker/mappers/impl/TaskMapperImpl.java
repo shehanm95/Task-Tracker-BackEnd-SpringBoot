@@ -6,6 +6,7 @@ import com.esaternperarl.tasktracker.mappers.SubTaskMapper;
 import com.esaternperarl.tasktracker.mappers.TaskMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,8 +14,8 @@ import org.springframework.stereotype.Component;
 public class TaskMapperImpl implements TaskMapper {
 
     private final ObjectMapper objectMapper;
+    @Autowired
     private SubTaskMapper subTaskMapper;
-
 
     @Override
     public Task toEntity(TaskDto taskDto) {
@@ -25,6 +26,10 @@ public class TaskMapperImpl implements TaskMapper {
 
     @Override
     public TaskDto toDto(Task task) {
-        return objectMapper.convertValue(task, TaskDto.class);
+        TaskDto dto = objectMapper.convertValue(task, TaskDto.class);
+        dto.setSubTaskDtoList(task.getSubTaskList()
+                .stream()
+                .map(subTask -> subTaskMapper.toDto(subTask)).toList());
+        return dto;
     }
 }

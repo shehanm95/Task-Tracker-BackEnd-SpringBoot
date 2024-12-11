@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CategoryService {
-    Category save(CategoryDto categoryDto);
+    Category add(CategoryDto categoryDto);
     Category update(CategoryDto categoryDto);
 
     void delete(UUID id);

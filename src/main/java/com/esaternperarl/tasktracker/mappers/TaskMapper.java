@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 public interface TaskMapper {
 
-    public Task toEntity(TaskDto taskDto);
+    Task toEntity(TaskDto taskDto);
 
     TaskDto toDto(Task task);
 }
