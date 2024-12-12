@@ -13,11 +13,11 @@ public interface TaskService {
 
     Task update(TaskDto taskDto);
 
-    void delete(UUID id);
+    void delete(Long id);
 
-    Task getById(UUID id);
+    Task getById(Long id);
 
-    Task taskFinishedRateSetter(UUID id);
+    Task taskFinishedRateSetter(Long id);
 
-    Task markAsFinished(UUID id);
+    Task markAsFinished(Long id);
 }

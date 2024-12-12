@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 public class CategoryDto{
-    private UUID id;
+    private Long id;
     @NonNull
     @NotEmpty
     private String name;

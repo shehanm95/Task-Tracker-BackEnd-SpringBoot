@@ -2,6 +2,7 @@ package com.esaternperarl.tasktracker.service;
 
 import com.esaternperarl.tasktracker.dto.SubTaskDto;
 import com.esaternperarl.tasktracker.entity.SubTask;
+import com.esaternperarl.tasktracker.entity.Task;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,8 +12,8 @@ public interface SubTaskService {
 
     List<SubTask> findAll();
 
-    SubTask update(SubTaskDto subTaskDto);
+    Task update(SubTaskDto subTaskDto);
 
-    void delete(UUID id);
+    void delete(Long id);
     //List<SubTask> getByTaskId(UUID );
 }

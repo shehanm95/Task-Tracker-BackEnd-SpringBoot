@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/task")
 @RequiredArgsConstructor
@@ -39,17 +40,17 @@ public class TaskController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteTask(@PathVariable UUID id ){
+    public void deleteTask(@PathVariable Long id ){
         taskService.delete(id);
     }
 
     @GetMapping("/get/{id}")
-    public TaskDto getTaskById(@PathVariable UUID id){
+    public TaskDto getTaskById(@PathVariable Long id){
         return taskMapper.toDto(taskService.getById(id));
     }
 
     @GetMapping("/finish/{id}")
-    public TaskDto markAsFinished(@PathVariable UUID id){
+    public TaskDto markAsFinished(@PathVariable Long id){
         return taskMapper.toDto(taskService.markAsFinished(id));
     }
 }

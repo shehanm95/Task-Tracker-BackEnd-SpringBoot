@@ -65,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     @Transactional
-    public void delete(UUID id) {
+    public void delete(Long id) {
         categoryRepo.findById(id)
                 .ifPresentOrElse(category -> {
                         //if this category has tasks
@@ -100,7 +100,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category findById(UUID id) {
+    public Category findById(Long id) {
         return categoryRepo.findById(id)
         .orElseThrow(
                 ()-> new IllegalArgumentException("requested category not in the database")

@@ -15,8 +15,8 @@ import java.util.UUID;
 @Table(name = "sub_task")
 public class SubTask {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     //@Column(nullable = false)
     private String subTaskName;
     @ManyToOne

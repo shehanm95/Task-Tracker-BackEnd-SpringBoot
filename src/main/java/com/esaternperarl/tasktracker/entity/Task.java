@@ -17,15 +17,15 @@ import java.util.UUID;
 @Table(name = "task")
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     //@Column(nullable = false , unique = true)
     private String topic;
     private String description;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task" , cascade = CascadeType.REMOVE)
     //@JsonIgnore
     private List<SubTask> subTaskList;
     private LocalDate startingDate;

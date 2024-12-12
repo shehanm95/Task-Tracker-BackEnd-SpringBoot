@@ -16,7 +16,7 @@ import java.util.UUID;
 @Data
 public class TaskDto {
 
-    private UUID id;
+    private Long id;
     @NonNull
     @NotEmpty
     private String topic;

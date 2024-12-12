@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/category")
 @RequiredArgsConstructor
@@ -28,12 +29,12 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteCategory(@PathVariable UUID id){
+    public void deleteCategory(@PathVariable Long id){
         categoryService.delete(id);
     }
 
     @GetMapping("/get/{id}")
-    public CategoryDto getCategory(@PathVariable UUID id){
+    public CategoryDto getCategory(@PathVariable Long id){
         return categoryMapper.toDto(categoryService.findById(id));
     }
 

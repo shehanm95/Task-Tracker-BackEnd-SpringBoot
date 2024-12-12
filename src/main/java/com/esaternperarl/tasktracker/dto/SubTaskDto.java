@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 public class SubTaskDto {
-    private UUID id;
+    private Long id;
     @NonNull
     @NotEmpty
     private String subTaskName;

@@ -16,8 +16,8 @@ import java.util.UUID;
 @Data
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     //@Column(nullable = false, unique = true)
     private String name;
     @OneToMany(mappedBy = "category")

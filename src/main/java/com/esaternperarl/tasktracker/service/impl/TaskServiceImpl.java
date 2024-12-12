@@ -9,6 +9,8 @@ import com.esaternperarl.tasktracker.repo.TaskRepo;
 import com.esaternperarl.tasktracker.service.TaskService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TaskServiceImpl implements TaskService {
     private final TaskRepo taskRepo;
     private final TaskMapper taskMapper;
@@ -45,15 +48,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(Long id) {
         taskRepo.findById(id)
                 .ifPresentOrElse(taskRepo::delete,()-> {
         throw new IllegalArgumentException("This task doesn't exist in the database...!");});
     }
 
     @Override
-    public Task getById(UUID id) {
-        return taskRepo.findById(id).orElseThrow(()-> new IllegalArgumentException("Requested Task Cannot Find In The Database...!"));
+    public Task getById(Long id) {
+        return this.taskFinishedRateSetter(id);
+        //return taskRepo.findById(id).orElseThrow(()-> new IllegalArgumentException("Requested Task Cannot Find In The Database...!"));
     }
 
     @Override
@@ -69,9 +73,9 @@ public class TaskServiceImpl implements TaskService {
      * @return the updated Task object with finishing rate and completion status
      * @throws IllegalArgumentException if the task is not found in the database
      */
-    public Task taskFinishedRateSetter(UUID id) {
+    public Task taskFinishedRateSetter(Long taskId) {
         // Retrieve task from repository
-        Task task = taskRepo.findById(id)
+        Task task = taskRepo.findById(taskId)
                 .orElseThrow(() -> new IllegalArgumentException("Main task cannot be found in the database by ID"));
 
         // Get the list of subtasks
@@ -84,10 +88,9 @@ public class TaskServiceImpl implements TaskService {
             task.setIsFinished(false);
             return task;
         }
-
-        // Count finished subtasks
+       // Count finished subtasks
         long finishedSubTaskCount = subTaskList.stream()
-                .filter(SubTask::getIsFinished) // Filter only finished subtasks
+                .filter(subTask -> subTask != null && Boolean.TRUE.equals(subTask.getIsFinished())) // Null-safe filtering
                 .count();
 
         // Calculate the finishing rate
@@ -102,7 +105,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public Task markAsFinished(UUID id) {
+    public Task markAsFinished(Long id) {
         // Retrieve task from repository
         Task task = taskRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Main task cannot be found in the database by ID"));

@@ -51,15 +51,15 @@ public class SubTaskServiceImpl implements SubTaskService {
 
     @Override
     @Transactional
-    public SubTask update(SubTaskDto subTaskDto) {
+    public Task update(SubTaskDto subTaskDto) {
         return subTaskRepo.findById(subTaskDto.getId())
                 .map(subTask -> {
                     if(subTask.getTask().getId().equals(subTaskDto.getTaskDto().getId())){
                         SubTask savedSubTask = subTaskRepo.save(subTaskMapper.toEntity(subTaskDto));
                         //setting Main task Finished Rate and save;
                         Task mainTask = taskService.taskFinishedRateSetter(savedSubTask.getTask().getId()); //should I save this inside the private method or here, as we are in a DB Transactional method
-                        taskRepo.save(mainTask);
-                        return savedSubTask;
+                        return taskRepo.save(mainTask);
+
                     }else {
                         throw new IllegalArgumentException("it's task id is not matching with its original subTask");
                     }
@@ -72,12 +72,10 @@ public class SubTaskServiceImpl implements SubTaskService {
 
 
     @Override
-    public void delete(UUID id) {
-        subTaskRepo.findById(id).ifPresentOrElse(
-                subTaskRepo::delete, ()-> {
-                    throw new IllegalArgumentException("Sub Task Doesn't exist in the database");
-                }
-        );
+    @Transactional
+    public void delete(Long id) {
+        subTaskRepo.findById(id).ifPresentOrElse(subTaskRepo::delete,  ()-> new IllegalArgumentException("Sub Task Doesn't exist in the database"));
+
     }
 
 
